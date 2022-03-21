@@ -130,8 +130,18 @@ async function actualitzar_tasca() {
         message: green('id de la tasca:')
     })
     
+    foundTask = await getTask(task.id)
+
+    // Cas: la tasca a actualitzar no existeix
+    if(foundTask == undefined){
+        console.log(`Error: La tasca amb id ${task.id} no existeix`);
+        return
+    }
+    
+    // Cas: la tasca a actualitzar existeix
     console.log('Actualitzar Tasca:');
-    console.log(await getTask(task.id));
+    console.log(task);
+
     opcio = await inquirer.prompt({
         type: 'rawlist',
         name: 'update',
