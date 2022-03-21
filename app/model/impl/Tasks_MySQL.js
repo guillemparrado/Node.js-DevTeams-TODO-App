@@ -32,7 +32,10 @@ async function getTask(id) {
             [id]
         )
         // Hi ha un bug a 'mysql' package: la id d'objecte retornat fent join no és la de task sinó la de user (???), reassigno la de task.
-        result.id = id;
+        // Debug: només reassigno en cas que hagi trobat la tasca (sinó, TypeError: Cannot set property 'id' of undefined)
+        if(result != undefined){
+            result.id = id;
+        }
         return result;
     }
     else
