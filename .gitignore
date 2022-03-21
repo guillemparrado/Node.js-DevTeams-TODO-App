@@ -1,3 +1,6 @@
+# Dotenv secrets
+**/.env
+
 # --- JSON Storage
 **/appdata.json
 
