@@ -1,14 +1,14 @@
-DROP DATABASE IF EXISTS devteam_todoapp;
-CREATE DATABASE devteam_todoapp CHARACTER SET utf8mb4;
+# DROP DATABASE IF EXISTS devteam_todoapp;
+CREATE DATABASE IF NOT EXISTS devteam_todoapp CHARACTER SET utf8mb4;
 USE devteam_todoapp;
 
-CREATE TABLE user
+CREATE TABLE IF NOT EXISTS user
 (
     id   INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE task
+CREATE TABLE IF NOT EXISTS task
 (
     id          INT PRIMARY KEY AUTO_INCREMENT,
     description TEXT                                  NOT NULL, # Compte: 'text' és reserved word
