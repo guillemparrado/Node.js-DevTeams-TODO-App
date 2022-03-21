@@ -66,8 +66,12 @@ async function connect() {
 async function getTask(id) {
     if(id){
         const result = await TaskModel.findById(id).exec();
-        result._doc.id = id;
-        return result._doc;
+        if(result != null) {
+            result._doc.id = id;
+            return result._doc;
+        }
+        // Resta d'app espera undefined i no null en cas que la tasca no existeixi
+        return undefined
     }
 }
 
