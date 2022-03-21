@@ -1,3 +1,5 @@
+const { execSync } = require('child_process')
+
 /*
 FONTS
 - https://www.mysqltutorial.org/mysql-nodejs/
@@ -15,7 +17,11 @@ Mecanisme:
 
 const {sqlSelect, sqlSingleSelect, sqlInsert, sqlUpdate, sqlDelete} = require('./utils/MySQL_queries');
 
-async function connect(){}  // No cal: Connexió gestionada a MySQL_queries.js
+async function connect(){
+    console.log(`Executant scripts de creació d'usuari i schema a mysql en cas que no existeixin...`);
+    console.log(`User: root`);
+    execSync('mysql -u root -p < ./mysql_scripts/all.sql')
+}
 
 async function getTask(id) {
     if (id) {

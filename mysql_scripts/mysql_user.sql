@@ -11,7 +11,7 @@ INSTRUCCIONS:
 - Arxiu a executar contra la base de dades el primer cop que executem l'app i després de crear les taules com a root (perquè la base de dades 'devteam_todoapp' existeixi).
  */
 
-CREATE USER 'todoapp_user'@'localhost' IDENTIFIED WITH mysql_native_password BY '123456';
+CREATE USER IF NOT EXISTS 'todoapp_user'@'localhost' IDENTIFIED WITH mysql_native_password BY '123456';
 GRANT USAGE ON *.* TO 'todoapp_user'@'localhost';
 ALTER USER 'todoapp_user'@'localhost' REQUIRE NONE WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;
 GRANT ALL PRIVILEGES ON devteam_todoapp.* TO 'todoapp_user'@'localhost';
