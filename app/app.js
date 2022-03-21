@@ -108,12 +108,15 @@ async function llistar_tasques() {
 
 
 async function mostrar_tasca() {
-    task = await inquirer.prompt([{
+    userRequest = await inquirer.prompt([{
         name: 'id',
         message: green('id de la tasca:')
 
     }])
-    task = await getTask(task.id)
+    task = await getTask(userRequest.id)
+    if(task == undefined){
+        task = `Error: la tasca amb id ${userRequest.id} no existeix`
+    }
     console.log(task);
 }
 
