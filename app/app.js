@@ -103,6 +103,9 @@ async function esborrar_tasca() {
 
 async function llistar_tasques() {
     tasks = await getAllTasks()
+    if(tasks.length == 0){
+        tasks = 'Error: No hi ha cap tasca per mostrar'
+    }
     console.log(tasks);
 }
 
