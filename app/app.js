@@ -139,6 +139,7 @@ async function actualitzar_tasca() {
     }
     
     // Cas: la tasca a actualitzar existeix
+    task = foundTask
     console.log('Actualitzar Tasca:');
     console.log(task);
 
