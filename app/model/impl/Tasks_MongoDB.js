@@ -23,6 +23,11 @@ FONTS
 // UPDATE: per fer tots els mètodes estàtics no cal crear classe >> refactor aproximació funcional.
 
 const schema = new Schema({
+    _id: {
+        type: Number,
+        required: true,
+        unique: true
+    },
     description: {
         type: String,
         required: true
@@ -45,12 +50,17 @@ const schema = new Schema({
     }
 })
 
+let lastId = -1
 //schema.plugin(AutoIncrement, {inc_field: 'id'});
 
 const TaskModel = mongoose.model("Task", schema);
 
 async function connect() {
     await mongoose.connect(process.env.MONGO_URI);
+    lastTask = await TaskModel.findOne({}).sort('-_id').exec()
+    if (lastTask != null){
+        lastId = lastTask._id
+    }
 }
 
 async function getTask(id) {
@@ -73,8 +83,8 @@ async function getAllTasks() {
 
 async function saveNewTask(object) {
     return await new Promise(async resolve => {
-        let task;
-        task = await new TaskModel(object);
+        object._id = ++lastId
+        let task = await new TaskModel(object);
         await task.save(error => {
             if (error)
                 console.log(`Error guardant task: ${error}`)
