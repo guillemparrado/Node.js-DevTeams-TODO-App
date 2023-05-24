@@ -23,7 +23,7 @@ FONTS
 // UPDATE: per fer tots els mètodes estàtics no cal crear classe >> refactor aproximació funcional.
 
 const schema = new Schema({
-    _id: {
+    id: {
         type: Number,
         required: true,
         unique: true
@@ -57,15 +57,13 @@ const TaskModel = mongoose.model("Task", schema);
 
 async function connect() {
     await mongoose.connect(process.env.MONGO_URI);
-    lastTask = await TaskModel.findOne({}).sort('-_id').exec()
-    if (lastTask != null){
-        lastId = lastTask._id
-    }
+    lastTask = await TaskModel.findOne({}).sort('-id').exec()
+    lastId = lastTask ? lastTask.id : -1
 }
 
 async function getTask(id) {
     if(id){
-        const result = await TaskModel.findById(id).exec();
+        const result = await TaskModel.findOne({id}).exec();
         if(result != null) {
             result._doc.id = id;
             return result._doc;
@@ -79,7 +77,7 @@ async function getAllTasks() {
     const results =  await TaskModel.find().exec();
     let docs = [];
     for (const result of results) {
-        result._doc.id = result._doc._id;
+        result._doc.id = result._doc.id;
         docs.push(result._doc);
     }
     return docs;
@@ -87,13 +85,13 @@ async function getAllTasks() {
 
 async function saveNewTask(object) {
     return await new Promise(async resolve => {
-        object._id = ++lastId
+        object.id = ++lastId
         let task = await new TaskModel(object);
         await task.save(error => {
             if (error)
                 console.log(`Error guardant task: ${error}`)
         });
-        object.id = task._id;
+        object.id = task.id;
         object.start_time = task.start_time;
         object.state = task.state;
         console.log(`Task Saved: ${JSON.stringify(object, null, 4)}`)
@@ -102,28 +100,28 @@ async function saveNewTask(object) {
 }
 
 async function updateTask(id, object){
-    await TaskModel.findOneAndUpdate({_id: id}, object).exec();
+    await TaskModel.findOneAndUpdate({id}, object).exec();
 }
 
 async function deleteTask(object){
-    // Se li pot passar l'objecte a eliminar o directament la _id
-    let _id;
-    // Cas: se li passa directament una _id
-    if(object.constructor.name === "ObjectId"){
-        _id = object;
+    // Se li pot passar l'objecte a eliminar o directament la id
+    let id;
+    // Cas: se li passa directament una id
+    if(typeof object === 'string'){
+        id = object;
     }
     // Cas: se li passa un objecte a eliminar
     else if('id' in object) {
-        _id = object.id;
+        id = object.id;
     }
 
     // Si input vàlid, elimina
-    if(_id){
+    if(id){
         try {
-            // Si no troba l'_id llença una excepció que cal recuperar perquè no trenqui l'app
-            await TaskModel.deleteOne({_id});
+            // Si no troba l'id llença una excepció que cal recuperar perquè no trenqui l'app
+            await TaskModel.deleteOne({id});
         } catch (e) {
-            console.log(`Error eliminant task: ${_id}`);
+            console.log(`Error eliminant task: ${id}`);
         }
     }
 }
