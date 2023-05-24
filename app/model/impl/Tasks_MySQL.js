@@ -1,3 +1,4 @@
+const os = require('os')
 const { execSync } = require('child_process')
 
 /*
@@ -20,7 +21,8 @@ const {sqlSelect, sqlSingleSelect, sqlInsert, sqlUpdate, sqlDelete} = require('.
 async function connect(){
     console.log(`Executant scripts de creació d'usuari i schema a mysql en cas que no existeixin...`);
     console.log(`User: root`);
-    execSync('mysql -u root -p < ./mysql_scripts/all.sql')
+    const mysqlPath = os.platform() === 'darwin' ? '/usr/local/mysql/bin/mysql' : 'mysql'
+    execSync(`${mysqlPath} -u root -p < ./mysql_scripts/all.sql`)
 }
 
 async function getTask(id) {
@@ -120,7 +122,7 @@ async function deleteTask(object) {
     let id;
 
     // Cas: se li passa directament una _id
-    if (typeof object === 'number') {
+    if (typeof object === 'string') {
         id = object;
     }
     // Cas: se li passa un objecte a eliminar

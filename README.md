@@ -1,11 +1,14 @@
 
-# DevTeam's TO-DO App
+# DevTeam's TODO App
 
 ## Disseny inicial de l'aplicació
 
 La proposta ha estat implementar l'arquitectura típica de 3 capes, repartides entre les 3 integrants del grup:
 
 ![App Architecture](img/app_architecture.png)
+
+
+## Repartiment de tasques
 
 |  **Component**   | **Integrant** |
 |:----------------:|:-------------:|

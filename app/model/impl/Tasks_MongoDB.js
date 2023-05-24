@@ -58,7 +58,7 @@ const TaskModel = mongoose.model("Task", schema);
 async function connect() {
     await mongoose.connect(process.env.MONGO_URI);
     lastTask = await TaskModel.findOne({}).sort('-id').exec()
-    lastId = lastTask ? lastTask.id : -1
+    lastId = lastTask ? lastTask.id : 0
 }
 
 async function getTask(id) {
